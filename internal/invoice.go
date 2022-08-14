@@ -1,29 +1,25 @@
 package internal
 
-type Invoice struct {
+type Invoice[T Amount] struct {
 	Name         string
 	Address      string
-	InvoiceItems []*InvoiceData
+	InvoiceItems []*InvoiceData[T]
 }
 
-func CreateInvoice(name string, address string, invoiceItems []*InvoiceData) *Invoice {
-	return &Invoice{
+func CreateInvoice[T Amount](name string, address string, invoiceItems []*InvoiceData[T]) *Invoice[T] {
+	return &Invoice[T]{
 		Name:         name,
 		Address:      address,
 		InvoiceItems: invoiceItems,
 	}
 }
 
-func (i *Invoice) CalculateInvoiceTotalAmount() float32 {
-	var invoiceTotalAmount float32 = 0
+func (i *Invoice[T]) CalculateInvoiceTotalAmount() T {
+	var invoiceTotalAmount T = 0
 	for _, data := range i.InvoiceItems {
 		amount := data.CalculateTotalAmount()
 		invoiceTotalAmount += amount
 	}
 
 	return invoiceTotalAmount
-}
-
-func (i *Invoice) GenerateInvoicePdf() error {
-	panic("Implement me")
 }

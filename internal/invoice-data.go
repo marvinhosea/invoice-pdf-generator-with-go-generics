@@ -1,35 +1,33 @@
 package internal
 
-type InvoiceData struct {
-	Title       string
-	Quantity    int
-	Price       float32
-	TotalAmount float32
+type Amount interface {
+	~int | ~float32 | ~float64
 }
 
-func (d *InvoiceData) CalculateTotalAmount() float32 {
-	totalAmount := float32(d.Quantity) * d.Price
-	d.TotalAmount = totalAmount
+type InvoiceData[T Amount] struct {
+	Title       string
+	Quantity    T
+	Price       T
+	TotalAmount T
+}
+
+func (d *InvoiceData[T]) CalculateTotalAmount() T {
+	totalAmount := d.Quantity * d.Price
 	return totalAmount
 }
 
-func NewInvoiceData(tittle string, qty int, price interface{}) *InvoiceData {
-	var convertedPrice float32
-
-	switch priceValue := price.(type) {
-	case int:
-		convertedPrice = float32(qty * priceValue)
-	case float32:
-		convertedPrice = float32(qty) * priceValue
-	case float64:
-		convertedPrice = float32(qty) * float32(priceValue)
-	default:
-		panic("invalid data type")
+func CreateInvoiceItems[T Amount](invoiceData ...*InvoiceData[T]) []*InvoiceData[T] {
+	var items []*InvoiceData[T]
+	for _, datum := range invoiceData {
+		items = append(items, datum)
 	}
+	return items
+}
 
-	return &InvoiceData{
-		Title:    tittle,
+func NewInvoiceData[T Amount](title string, qty, price T) *InvoiceData[T] {
+	return &InvoiceData[T]{
+		Title:    title,
 		Quantity: qty,
-		Price:    convertedPrice,
+		Price:    price,
 	}
 }

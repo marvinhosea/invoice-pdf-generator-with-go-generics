@@ -1,18 +1,20 @@
 package main
 
 import (
-	"fmt"
-	"marvinhosea/invoices/internal"
+	internal "marvinhosea/invoices/internal"
 )
 
 func main() {
 	// Generate sample invoice data
-	ecommerceInvoiceData := internal.NewInvoiceData("Ecommerce application", 1, 3000.50)
-	laptopInvoiceData := internal.NewInvoiceData("Macbook Pro", 2, 1999.70)
+	ecommerceInvoiceData := internal.NewInvoiceData("Ecommerce application", 1, 3000)
+	laptopInvoiceData := internal.NewInvoiceData("Macbook Pro", 2, 1999)
 	// Invoice Items collection
-	invoiceItems := []*internal.InvoiceData{ecommerceInvoiceData, laptopInvoiceData}
+	invoiceItems := internal.CreateInvoiceItems(ecommerceInvoiceData, laptopInvoiceData)
 
 	// Create single invoice
 	invoice := internal.CreateInvoice("Example Shop", "Example address", invoiceItems)
-	fmt.Printf("The Total Invoice Amount is: %d", invoice.CalculateInvoiceTotalAmount())
+	err := internal.GenerateInvoicePdf(*invoice)
+	if err != nil {
+		panic(err)
+	}
 }
