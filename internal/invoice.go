@@ -14,8 +14,8 @@ func CreateInvoice(name string, address string, invoiceItems []*InvoiceData) *In
 	}
 }
 
-func (i *Invoice) CalculateInvoiceTotalAmount() int {
-	var invoiceTotalAmount = 0
+func (i *Invoice) CalculateInvoiceTotalAmount() float32 {
+	var invoiceTotalAmount float32 = 0
 	for _, data := range i.InvoiceItems {
 		amount := data.CalculateTotalAmount()
 		invoiceTotalAmount += amount
