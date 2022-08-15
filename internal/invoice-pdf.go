@@ -7,7 +7,7 @@ import (
 	"marvinhosea/invoices/internal/config"
 )
 
-type Client[T Amount] struct {
+type Client struct {
 	creator *creator.Creator
 }
 
@@ -83,7 +83,7 @@ var cellStyles = map[string]cellStyle{
 	},
 }
 
-func GenerateInvoicePdf[T Amount](invoice Invoice[T]) error {
+func GenerateInvoicePdf(invoice Invoice) error {
 	conf, err := config.GetUniDocCred()
 	if err != nil {
 		return err
@@ -97,14 +97,14 @@ func GenerateInvoicePdf[T Amount](invoice Invoice[T]) error {
 	c := creator.New()
 	c.SetPageMargins(40, 40, 0, 0)
 
-	cr := &Client[T]{creator: c}
+	cr := &Client{creator: c}
 	err = cr.GeneratePdf(invoice)
 	if err != nil {
 		return err
 	}
 	return nil
 }
-func (c *Client[T]) GeneratePdf(invoice Invoice[T]) error {
+func (c *Client) GeneratePdf(invoice Invoice) error {
 	cr := c.creator
 	rect := cr.NewRectangle(0, 0, creator.PageSizeLetter[0], 120)
 	rect.SetFillColor(creator.ColorRGBFromHex("#dde4e5"))
@@ -172,7 +172,7 @@ func drawCell(table *creator.Table, content creator.VectorDrawable, cellStyle ce
 	return nil
 }
 
-func writeInvoice[T Amount](c *creator.Creator, invoice Invoice[T]) error {
+func writeInvoice(c *creator.Creator, invoice Invoice) error {
 	headerStyle := c.NewTextStyle()
 	// Invoice Header info table.
 	table := c.NewTable(2)

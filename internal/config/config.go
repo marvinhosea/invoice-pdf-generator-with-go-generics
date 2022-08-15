@@ -2,6 +2,7 @@ package config
 
 import (
 	"errors"
+	"github.com/joho/godotenv"
 	"os"
 )
 
@@ -10,8 +11,12 @@ type UniDocConfig struct {
 }
 
 func GetUniDocCred() (*UniDocConfig, error) {
-	key, ok := os.LookupEnv("UNIDOC_LICENSE_API_KEY")
-	if !ok {
+	err := godotenv.Load()
+	if err != nil {
+		return nil, err
+	}
+	key := os.Getenv("UNIDOC_LICENSE_API_KEY")
+	if len(key) == 0 {
 		return nil, errors.New("uni doc key not found")
 	}
 

@@ -1,31 +1,27 @@
 package internal
 
-type Amount interface {
-	~int | ~float32 | ~float64
-}
-
-type InvoiceData[T Amount] struct {
+type InvoiceData struct {
 	Title       string
-	Quantity    T
-	Price       T
-	TotalAmount T
+	Quantity    int
+	Price       int
+	TotalAmount int
 }
 
-func (d *InvoiceData[T]) CalculateTotalAmount() T {
+func (d *InvoiceData) CalculateTotalAmount() int {
 	totalAmount := d.Quantity * d.Price
 	return totalAmount
 }
 
-func CreateInvoiceItems[T Amount](invoiceData ...*InvoiceData[T]) []*InvoiceData[T] {
-	var items []*InvoiceData[T]
+func CreateInvoiceItems(invoiceData ...*InvoiceData) []*InvoiceData {
+	var items []*InvoiceData
 	for _, datum := range invoiceData {
 		items = append(items, datum)
 	}
 	return items
 }
 
-func NewInvoiceData[T Amount](title string, qty, price T) *InvoiceData[T] {
-	return &InvoiceData[T]{
+func NewInvoiceData(title string, qty, price int) *InvoiceData {
+	return &InvoiceData{
 		Title:    title,
 		Quantity: qty,
 		Price:    price,

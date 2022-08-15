@@ -1,21 +1,21 @@
 package internal
 
-type Invoice[T Amount] struct {
+type Invoice struct {
 	Name         string
 	Address      string
-	InvoiceItems []*InvoiceData[T]
+	InvoiceItems []*InvoiceData
 }
 
-func CreateInvoice[T Amount](name string, address string, invoiceItems []*InvoiceData[T]) *Invoice[T] {
-	return &Invoice[T]{
+func CreateInvoice(name string, address string, invoiceItems []*InvoiceData) *Invoice {
+	return &Invoice{
 		Name:         name,
 		Address:      address,
 		InvoiceItems: invoiceItems,
 	}
 }
 
-func (i *Invoice[T]) CalculateInvoiceTotalAmount() T {
-	var invoiceTotalAmount T = 0
+func (i *Invoice) CalculateInvoiceTotalAmount() int {
+	var invoiceTotalAmount = 0
 	for _, data := range i.InvoiceItems {
 		amount := data.CalculateTotalAmount()
 		invoiceTotalAmount += amount
