@@ -1,5 +1,7 @@
 package internal
 
+import "log"
+
 type Invoice struct {
 	Name         string
 	Address      string
@@ -18,6 +20,7 @@ func (i *Invoice) CalculateInvoiceTotalAmount() float32 {
 	var invoiceTotalAmount float32 = 0
 	for _, data := range i.InvoiceItems {
 		amount := data.CalculateTotalAmount()
+		log.Println("amount", amount)
 		invoiceTotalAmount += amount
 	}
 

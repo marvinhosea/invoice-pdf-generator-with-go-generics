@@ -17,11 +17,11 @@ func NewInvoiceData(title string, qty float32, price interface{}) *InvoiceData {
 
 	switch priceValue := price.(type) {
 	case int:
-		convertedPrice = qty * float32(priceValue)
+		convertedPrice = float32(priceValue)
 	case float32:
-		convertedPrice = qty * priceValue
+		convertedPrice = priceValue
 	case float64:
-		convertedPrice = qty * float32(priceValue)
+		convertedPrice = float32(priceValue)
 	default:
 		panic("type not accepted")
 	}

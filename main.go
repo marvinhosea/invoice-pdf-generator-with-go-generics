@@ -7,8 +7,8 @@ import (
 
 func main() {
 	// Generate sample invoice data
-	ecommerceInvoiceData := internal.NewInvoiceData("Ecommerce application", 1, 3000)
-	laptopInvoiceData := internal.NewInvoiceData("Macbook Pro", 2, 200)
+	ecommerceInvoiceData := internal.NewInvoiceData("Ecommerce application", 1, 3000.50)
+	laptopInvoiceData := internal.NewInvoiceData("Macbook Pro", 2, "200.70")
 	// Invoice Items collection
 	invoiceItems := []*internal.InvoiceData{ecommerceInvoiceData, laptopInvoiceData}
 
