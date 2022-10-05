@@ -1,5 +1,7 @@
 package internal
 
+import "errors"
+
 type InvoiceData struct {
 	Title       string
 	Quantity    float32
@@ -12,7 +14,7 @@ func (d *InvoiceData) CalculateTotalAmount() float32 {
 	return totalAmount
 }
 
-func NewInvoiceData(title string, qty float32, price interface{}) *InvoiceData {
+func NewInvoiceData(title string, qty float32, price interface{}) (*InvoiceData, error) {
 	var convertedPrice float32
 
 	switch priceValue := price.(type) {
@@ -23,12 +25,12 @@ func NewInvoiceData(title string, qty float32, price interface{}) *InvoiceData {
 	case float64:
 		convertedPrice = float32(priceValue)
 	default:
-		panic("type not accepted")
+		return nil, errors.New("type not accepted")
 	}
 
 	return &InvoiceData{
 		Title:    title,
 		Quantity: qty,
 		Price:    convertedPrice,
-	}
+	}, nil
 }

@@ -7,13 +7,18 @@ import (
 
 func main() {
 	// Generate sample invoice data
-	ecommerceInvoiceData := internal.NewInvoiceData("Ecommerce application", 1, 3000.50)
-	laptopInvoiceData := internal.NewInvoiceData("Macbook Pro", 2, "200.70")
+	ecommerceInvoiceData, err := internal.NewInvoiceData("Ecommerce application", 1, 3000.50)
+	if err != nil {
+		panic(err)
+	}
+	laptopInvoiceData, err := internal.NewInvoiceData("Macbook Pro", 1, 200.70)
+	if err != nil {
+		panic(err)
+	}
 	// Invoice Items collection
 	invoiceItems := []*internal.InvoiceData{ecommerceInvoiceData, laptopInvoiceData}
 
 	// Create single invoice
 	invoice := internal.CreateInvoice("Example Shop", "Example address", invoiceItems)
 	fmt.Printf("The Total Invoice Amount is: %f", invoice.CalculateInvoiceTotalAmount())
-
 }
